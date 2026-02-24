@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OwnStep</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Animated background -->
+        <div class="bg-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M16 2L4 9v14l12 7 12-7V9L16 2z" stroke="currentColor" stroke-width="2" fill="none" />
+                        <path d="M16 8l-6 3.5v7L16 22l6-3.5v-7L16 8z" fill="currentColor" opacity="0.3" />
+                        <circle cx="16" cy="15" r="3" fill="currentColor" />
+                    </svg>
+                </div>
+                <span class="logo-text">OwnStep</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
+                    </svg>
+                    <span>Панель</span>
+                </li>
+                <li class="nav-item" data-tab="servers">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="7" rx="2" />
+                        <rect x="2" y="14" width="20" height="7" rx="2" />
+                        <circle cx="6" cy="6.5" r="1" fill="currentColor" />
+                        <circle cx="6" cy="17.5" r="1" fill="currentColor" />
+                    </svg>
+                    <span>Серверы</span>
+                </li>
+                <li class="nav-item" data-tab="chaining">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                    <span>Цепочка</span>
+                </li>
+                <li class="nav-item" data-tab="logs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    <span>Логи</span>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="version">v1.0.0</div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section class="tab-content active" id="tab-dashboard">
+                <div class="page-header">
+                    <h1>Панель управления</h1>
+                    <div class="status-badge disconnected" id="globalStatus">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Отключено</span>
+                    </div>
+                </div>
+
+                <div class="connect-section">
+                    <div class="connect-ring" id="connectRing">
+                        <div class="connect-btn" id="connectBtn" onclick="toggleConnection()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon points="5 3 19 12 5 21 5 3" id="playIcon" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                style="display:none">
+                                <rect x="6" y="4" width="4" height="16" id="pauseIcon1" />
+                                <rect x="14" y="4" width="4" height="16" id="pauseIcon2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="connect-label" id="connectLabel">Нажмите для подключения</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌍</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Сервер</div>
+                            <div class="stat-value" id="statServer">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔗</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Протокол</div>
+                            <div class="stat-value" id="statProtocol">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🛡️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Цепочка</div>
+                            <div class="stat-value" id="statChain">Выкл</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Время</div>
+                            <div class="stat-value" id="statUptime">00:00:00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Servers Tab -->
+            <section class="tab-content" id="tab-servers">
+                <div class="page-header">
+                    <h1>Настройка серверов</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🇩🇪 Основной сервер (Германия)</h2>
+                        <span class="badge badge-primary">VLESS + Reality</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="serverAddress">Адрес сервера</label>
+                                <input type="text" id="serverAddress" placeholder="123.45.67.89" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverPort">Порт</label>
+                                <input type="number" id="serverPort" placeholder="443" value="443" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverUUID">UUID</label>
+                                <input type="text" id="serverUUID" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                    class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverFlow">Flow</label>
+                                <select id="serverFlow" class="input">
+                                    <option value="xtls-rprx-vision">xtls-rprx-vision</option>
+                                    <option value="">Нет</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="serverPubKey">Public Key (Reality)</label>
+                                <input type="text" id="serverPubKey" placeholder="Public Key от сервера" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverSNI">SNI (Server Name)</label>
+                                <input type="text" id="serverSNI" placeholder="www.google.com" value="www.google.com"
+                                    class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverShortId">Short ID</label>
+                                <input type="text" id="serverShortId" placeholder="Оставьте пустым если нет"
+                                    class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverFP">Fingerprint</label>
+                                <select id="serverFP" class="input">
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">Firefox</option>
+                                    <option value="safari">Safari</option>
+                                    <option value="random">Random</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 16px;">
+                            <label for="localSocksPort">Локальный SOCKS5 порт</label>
+                            <input type="number" id="localSocksPort" placeholder="10808" value="10808" class="input"
+                                style="max-width: 200px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 8px;">
+                            <label for="localHttpPort">Локальный HTTP порт</label>
+                            <input type="number" id="localHttpPort" placeholder="10809" value="10809" class="input"
+                                style="max-width: 200px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h2>📋 Импорт конфигурации</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="importLink">Вставьте VLESS ссылку</label>
+                            <input type="text" id="importLink" placeholder="vless://uuid@host:port?..." class="input">
+                        </div>
+                        <button class="btn btn-secondary" onclick="importVlessLink()">Импортировать</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveServers()">💾 Сохранить
+                    настройки</button>
+            </section>
+
+            <!-- Chaining Tab -->
+            <section class="tab-content" id="tab-chaining">
+                <div class="page-header">
+                    <h1>Цепочка прокси</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🇺🇸 Прокси второго уровня (США)</h2>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="chainEnabled" onchange="updateChainUI()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="card-body" id="chainSettings">
+                        <div class="chain-diagram">
+                            <div class="chain-node">
+                                <div class="chain-icon">💻</div>
+                                <div class="chain-label">Ваш ПК</div>
+                            </div>
+                            <div class="chain-arrow">→</div>
+                            <div class="chain-node active">
+                                <div class="chain-icon">🇩🇪</div>
+                                <div class="chain-label">Германия</div>
+                            </div>
+                            <div class="chain-arrow" id="chainArrow2" style="opacity:0.3">→</div>
+                            <div class="chain-node" id="chainNodeUS" style="opacity:0.3">
+                                <div class="chain-icon">🇺🇸</div>
+                                <div class="chain-label">США</div>
+                            </div>
+                            <div class="chain-arrow" id="chainArrow3" style="opacity:0.3">→</div>
+                            <div class="chain-node" id="chainNodeInternet" style="opacity:0.3">
+                                <div class="chain-icon">🌐</div>
+                                <div class="chain-label">Интернет</div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid" id="chainFields" style="opacity: 0.5; pointer-events: none;">
+                            <div class="form-group">
+                                <label for="chainProtocol">Протокол</label>
+                                <select id="chainProtocol" class="input">
+                                    <option value="socks">SOCKS5</option>
+                                    <option value="http">HTTP</option>
+                                    <option value="vless">VLESS</option>
+                                    <option value="vmess">VMess</option>
+                                    <option value="shadowsocks">Shadowsocks</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="chainAddress">Адрес</label>
+                                <input type="text" id="chainAddress" placeholder="us-proxy.example.com" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="chainPort">Порт</label>
+                                <input type="number" id="chainPort" placeholder="1080" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="chainUser">Логин (если есть)</label>
+                                <input type="text" id="chainUser" placeholder="username" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="chainPass">Пароль (если есть)</label>
+                                <input type="password" id="chainPass" placeholder="password" class="input">
+                            </div>
+                            <div class="form-group" id="chainVlessFields" style="display:none;">
+                                <label for="chainUUID">UUID (VLESS/VMess)</label>
+                                <input type="text" id="chainUUID" placeholder="uuid" class="input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveServers()">💾 Сохранить
+                    настройки</button>
+            </section>
+
+            <!-- Logs Tab -->
+            <section class="tab-content" id="tab-logs">
+                <div class="page-header">
+                    <h1>Логи</h1>
+                    <div>
+                        <button class="btn btn-secondary btn-sm" onclick="clearLogs()">Очистить</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportConfig()">📄 Экспорт конфига</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="log-viewer" id="logViewer">
+                            <div class="log-line log-info">ShadowLink v1.0.0 готов к работе</div>
+                            <div class="log-line log-info">Настройте сервер и нажмите "Подключиться"</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h2>Сгенерированный Xray конфиг</h2>
+                    </div>
+                    <div class="card-body">
+                        <pre class="config-preview" id="configPreview">Нажмите "Экспорт конфига" для генерации</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

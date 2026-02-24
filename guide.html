@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OwnStep — Инструкция по настройке сервера</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: rgba(17, 24, 39, 0.9);
+            --text: #f0f4ff;
+            --text2: #94a3b8;
+            --muted: #64748b;
+            --accent: #6366f1;
+            --accent2: #8b5cf6;
+            --glow: rgba(99, 102, 241, 0.4);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.3);
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --border: rgba(148, 163, 184, 0.1);
+            --radius: 12px;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Animated background */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            top: -15%;
+            right: -10%;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent2);
+            bottom: -10%;
+            left: 5%;
+            animation-delay: -8s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--green);
+            top: 50%;
+            left: 50%;
+            animation-delay: -16s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(40px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-30px, 30px) scale(0.95);
+            }
+        }
+
+        /* Main container */
+        .guide {
+            position: relative;
+            z-index: 5;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px var(--glow);
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .logo-name {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-subtitle {
+            color: var(--text2);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Intro */
+        .intro {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .intro h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .intro p {
+            color: var(--text2);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 16px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px var(--glow);
+        }
+
+        .step-title-area h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .step-title-area .step-time {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .step-body {
+            padding-left: 64px;
+        }
+
+        .step-body p {
+            color: var(--text2);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .step-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Substeps */
+        .substep {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+        }
+
+        .substep:last-child {
+            border-bottom: none;
+        }
+
+        .substep-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .substep-content {
+            flex: 1;
+        }
+
+        .substep-content strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .substep-content span {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.5;
+        }
+
+        /* Command box */
+        .command-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            position: relative;
+            font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+        }
+
+        .command-label {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-family: var(--font);
+        }
+
+        .command-text {
+            font-size: 13px;
+            color: var(--green);
+            word-break: break-all;
+            line-height: 1.6;
+            user-select: all;
+        }
+
+        .command-copy {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text2);
+            font-size: 12px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .command-copy:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .command-copy.copied {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* Info box */
+        .info-box {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.6;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .info-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+
+        .info-box.success {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+
+        .info-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Config recommendations */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .config-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .config-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .config-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .config-value.recommend {
+            color: var(--green);
+        }
+
+        /* Visual step indicator */
+        .visual-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 20px 0;
+            margin: 20px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flow-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--bg2);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.3s;
+        }
+
+        .flow-icon.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px var(--glow);
+        }
+
+        .flow-icon.done {
+            border-color: var(--green);
+            box-shadow: 0 0 12px var(--green-glow);
+        }
+
+        .flow-label {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 18px;
+            color: var(--muted);
+            margin-bottom: 18px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Screenshot placeholder */
+        .screenshot {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px dashed rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .screenshot-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .screenshot-text {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .screenshot-text strong {
+            color: var(--text2);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .guide {
+                padding: 20px 12px;
+            }
+
+            .step-body {
+                padding-left: 0;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="guide">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L4 9v14l12 7 12-7V9L16 2z" stroke="currentColor" stroke-width="2" fill="none" />
+                    <path d="M16 8l-6 3.5v7L16 22l6-3.5v-7L16 8z" fill="currentColor" opacity="0.3" />
+                    <circle cx="16" cy="15" r="3" fill="currentColor" />
+                </svg>
+            </div>
+            <div class="logo-name">OwnStep</div>
+            <div class="logo-subtitle">Инструкция по настройке сервера</div>
+        </div>
+
+        <!-- Intro -->
+        <div class="intro">
+            <h1>🛡️ Свой VPN за 10 минут</h1>
+            <p>
+                Эта инструкция поможет вам настроить собственный VPN-сервер.<br>
+                Не нужно быть программистом — просто следуйте шагам!
+            </p>
+            <div class="time-badge">⏱ Общее время: ~10 минут</div>
+        </div>
+
+        <!-- Visual flow -->
+        <div class="visual-flow">
+            <div class="flow-item">
+                <div class="flow-icon">🛒</div>
+                <div class="flow-label">Покупка<br>сервера</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">🖥</div>
+                <div class="flow-label">Открыть<br>консоль</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">📋</div>
+                <div class="flow-label">Вставить<br>команду</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">🔗</div>
+                <div class="flow-label">Скопировать<br>ссылку</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon done">✅</div>
+                <div class="flow-label">VPN<br>работает!</div>
+            </div>
+        </div>
+
+        <!-- ═══════════ STEP 1: Buy VPS ═══════════ -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title-area">
+                    <h2>Покупка сервера</h2>
+                    <div class="step-time">⏱ ~5 минут</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Вам нужен VPS (виртуальный сервер) в другой стране. Мы рекомендуем <strong>IT-Garage</strong> — там
+                    можно оплатить российской картой.</p>
+
+                <div class="substep">
+                    <div class="substep-icon">1️⃣</div>
+                    <div class="substep-content">
+                        <strong>Зайдите на it-garage.pro</strong>
+                        <span>Нажмите «Зарегистрироваться» и создайте аккаунт. Понадобится email.</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <div class="substep-icon">2️⃣</div>
+                    <div class="substep-content">
+                        <strong>Выберите «VPS/VDS» в меню</strong>
+                        <span>Нажмите «Заказать» для VPS-сервера.</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <div class="substep-icon">3️⃣</div>
+                    <div class="substep-content">
+                        <strong>Выберите параметры сервера:</strong>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="config-grid">
+                    <div class="config-item">
+                        <div class="config-label">Страна</div>
+                        <div class="config-value recommend">🇩🇪 Германия</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Тариф</div>
+                        <div class="config-value recommend">Самый дешёвый</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">ОС (система)</div>
+                        <div class="config-value recommend">Ubuntu 22.04</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Оплата</div>
+                        <div class="config-value">Российская карта 💳</div>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <div class="substep-icon">4️⃣</div>
+                    <div class="substep-content">
+                        <strong>Оплатите и дождитесь активации</strong>
+                        <span>Сервер обычно активируется в течение 1-5 минут. Вам на почту придут данные для входа
+                            (IP-адрес и пароль).</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-icon">💡</div>
+                    <div>Самого дешёвого тарифа более чем достаточно для VPN. Это примерно 200-400₽/мес. Одного сервера
+                        хватит на всю семью!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ STEP 2: Open console ═══════════ -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title-area">
+                    <h2>Открыть консоль сервера</h2>
+                    <div class="step-time">⏱ ~1 минута</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Теперь нужно подключиться к серверу. Не паникуйте — это просто!</p>
+
+                <div class="substep">
+                    <div class="substep-icon">1️⃣</div>
+                    <div class="substep-content">
+                        <strong>Зайдите в личный кабинет IT-Garage</strong>
+                        <span>Адрес: <strong>my.it-garage.pro</strong> → войдите под своим логином и паролем.</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <div class="substep-icon">2️⃣</div>
+                    <div class="substep-content">
+                        <strong>Найдите ваш сервер в списке</strong>
+                        <span>Обычно в разделе «Товары/Услуги» или «Виртуальные серверы».</span>
+                    </div>
+                </div>
+
+                <div class="substep">
+                    <div class="substep-icon">3️⃣</div>
+                    <div class="substep-content">
+                        <strong>Нажмите кнопку «VNC»</strong>
+                        <span>Эта кнопка откроет терминал (чёрное окно с текстом) прямо в браузере. Это и есть консоль
+                            вашего сервера!</span>
+                    </div>
+                </div>
+
+                <div class="screenshot">
+                    <div class="screenshot-icon">🖥</div>
+                    <div class="screenshot-text">
+                        Откроется чёрное окно — это так и должно быть!<br>
+                        <strong>Введите логин:</strong> root<br>
+                        <strong>Введите пароль:</strong> тот, что пришёл вам на почту
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <div class="info-icon">⚠️</div>
+                    <div>Когда вводите пароль, символы <strong>не отображаются</strong> — это нормально! Просто вводите
+                        пароль и нажмите Enter.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ STEP 3: Run script ═══════════ -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title-area">
+                    <h2>Установка VPN (одна команда!)</h2>
+                    <div class="step-time">⏱ ~1 минута</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>После того как вы вошли в консоль, скопируйте и вставьте эту команду:</p>
+
+                <div class="command-box">
+                    <div class="command-label">📋 Скопируйте эту команду целиком:</div>
+                    <div class="command-text" id="installCommand">bash <(curl -sL
+                            https://raw.githubusercontent.com/YOUR_REPO/main/server-setup.sh)</div>
+                            <button class="command-copy" onclick="copyCommand()">Копировать</button>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div>
+                            <strong>Как вставить команду в VNC-консоль:</strong><br>
+                            В VNC-консоле обычного Ctrl+V нет. Вместо этого:<br>
+                            • Правый клик мышкой → Paste / Вставить<br>
+                            • Или найдите кнопку «Clipboard» / «Буфер обмена» сбоку панели VNC
+                        </div>
+                    </div>
+
+                    <p>Нажмите <strong>Enter</strong> и подождите ~1 минуту. Скрипт сам всё установит и покажет
+                        прогресс:</p>
+
+                    <div class="screenshot">
+                        <div class="screenshot-icon">⏳</div>
+                        <div class="screenshot-text">
+                            Вы увидите пошаговый прогресс:<br>
+                            <strong>📋 Шаг 1 из 5: Проверка системы</strong> ✅<br>
+                            <strong>📥 Шаг 2 из 5: Скачивание Xray</strong> ✅<br>
+                            <strong>🔐 Шаг 3 из 5: Генерация ключей</strong> ✅<br>
+                            <strong>⚙️ Шаг 4 из 5: Настройка</strong> ✅<br>
+                            <strong>🚀 Шаг 5 из 5: Запуск VPN</strong> ✅
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════ STEP 4: Copy link ═══════════ -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title-area">
+                        <h2>Скопировать вашу ссылку</h2>
+                        <div class="step-time">⏱ ~1 минута</div>
+                    </div>
+                </div>
+                <div class="step-body">
+                    <p>После завершения установки скрипт покажет вашу <strong>VLESS-ссылку</strong>. Она будет выглядеть
+                        примерно так:</p>
+
+                    <div class="command-box">
+                        <div class="command-label">Пример вашей ссылки (у вас будет своя!):</div>
+                        <div class="command-text" style="color: var(--accent); font-size: 12px;">
+                            vless://abc123-def456@12.34.56.78:443?type=tcp&security=reality&sni=www.google.com&pbk=ваш_ключ&flow=xtls-rprx-vision&fp=chrome#OwnStep
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">📋</div>
+                        <div class="substep-content">
+                            <strong>Скопируйте эту ссылку!</strong>
+                            <span>Выделите её мышкой в VNC-консоле и скопируйте. Или перепишите на бумажку — она
+                                понадобится на следующем шаге.</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <div class="info-icon">🎉</div>
+                        <div>Серверная часть готова! Сервер будет работать автоматически и переживёт перезагрузку.
+                            Больше ничего на сервере делать не нужно.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════ STEP 5: Setup on PC ═══════════ -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title-area">
+                        <h2>Настройка на компьютере</h2>
+                        <div class="step-time">⏱ ~2 минуты</div>
+                    </div>
+                </div>
+                <div class="step-body">
+                    <p>Теперь настроим VPN на вашем компьютере с помощью мастера OwnStep.</p>
+
+                    <div class="substep">
+                        <div class="substep-icon">1️⃣</div>
+                        <div class="substep-content">
+                            <strong>Откройте файл setup.html</strong>
+                            <span>Он находится в папке OwnStep. Просто дважды кликните по нему — откроется в
+                                браузере.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">2️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Начать настройку»</strong>
+                            <span>На первом экране нажмите фиолетовую кнопку.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">3️⃣</div>
+                        <div class="substep-content">
+                            <strong>Вставьте вашу VLESS-ссылку</strong>
+                            <span>На втором экране выберите «Вставить ссылку» и вставьте ту ссылку, которую скопировали
+                                с сервера.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">4️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Сгенерировать конфиг»</strong>
+                            <span>Скачается файл config.json — положите его в папку OwnStep.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">5️⃣</div>
+                        <div class="substep-content">
+                            <strong>Запустите OwnStep.bat</strong>
+                            <span>Дважды кликните по файлу OwnStep.bat — VPN включится!</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <div class="info-icon">✅</div>
+                        <div>
+                            <strong>Готово!</strong> Ваш VPN работает. Проверьте IP на сайте <strong>2ip.ru</strong> —
+                            он должен показывать другую страну.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════ Bonus: Phone ═══════════ -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">📱</div>
+                    <div class="step-title-area">
+                        <h2>Бонус: VPN на телефоне</h2>
+                        <div class="step-time">⏱ ~2 минуты</div>
+                    </div>
+                </div>
+                <div class="step-body">
+                    <p>Ту же ссылку можно использовать и на телефоне!</p>
+
+                    <div class="substep">
+                        <div class="substep-icon">🤖</div>
+                        <div class="substep-content">
+                            <strong>Android</strong>
+                            <span>Установите приложение <strong>v2rayNG</strong> из Google Play. Нажмите «+» → «Импорт
+                                из буфера обмена» и вставьте вашу VLESS-ссылку.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">🍎</div>
+                        <div class="substep-content">
+                            <strong>iPhone / iPad</strong>
+                            <span>Установите приложение <strong>Streisand</strong> из App Store. Нажмите «+» и вставьте
+                                ссылку.</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div>На третьем экране setup.html есть QR-код — отсканируйте его камерой телефона для быстрого
+                            импорта настроек!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>OwnStep • Свой VPN — свои правила</p>
+                <p style="margin-top: 8px">Есть вопросы? Спросите того, кто дал вам эту инструкцию 😊</p>
+            </div>
+        </div>
+
+        <script>
+            function copyCommand() {
+                const text = document.getElementById('installCommand').textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = document.querySelector('.command-copy');
+                    btn.textContent = '✅ Скопировано!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = 'Копировать';
+                        btn.classList.remove('copied');
+                    }, 3000);
+                });
+            }
+        </script>
+</body>
+
+</html>

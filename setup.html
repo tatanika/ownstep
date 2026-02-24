@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OwnStep — Настройка</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: rgba(17, 24, 39, 0.9);
+            --text: #f0f4ff;
+            --text2: #94a3b8;
+            --muted: #64748b;
+            --accent: #6366f1;
+            --accent2: #8b5cf6;
+            --glow: rgba(99, 102, 241, 0.4);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.3);
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --border: rgba(148, 163, 184, 0.1);
+            --radius: 12px;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            top: -15%;
+            right: -10%;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent2);
+            bottom: -10%;
+            left: 5%;
+            animation-delay: -8s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--green);
+            top: 50%;
+            left: 50%;
+            animation-delay: -16s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(40px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-30px, 30px) scale(0.95);
+            }
+        }
+
+        /* Container */
+        .wizard {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 640px;
+            padding: 20px;
+        }
+
+        /* Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px var(--glow);
+            animation: logo-pulse 3s ease-in-out infinite;
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .logo-name {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes logo-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 8px 32px var(--glow);
+            }
+
+            50% {
+                box-shadow: 0 8px 48px rgba(99, 102, 241, 0.6);
+            }
+        }
+
+        /* Progress */
+        .progress {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(148, 163, 184, 0.15);
+            transition: background 0.5s ease;
+        }
+
+        .progress-step.active {
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--glow);
+        }
+
+        .progress-step.done {
+            background: var(--green);
+        }
+
+        /* Card */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            animation: card-in 0.4s ease;
+        }
+
+        @keyframes card-in {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Steps */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: card-in 0.4s ease;
+        }
+
+        /* Step 1 */
+        .welcome-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .step h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .step .subtitle {
+            color: var(--text2);
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .feature {
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: var(--radius);
+            padding: 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .feature-text {
+            font-size: 12px;
+            color: var(--text2);
+            font-weight: 500;
+        }
+
+        /* Step 2 */
+        .method-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text2);
+            font-family: var(--font);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .method-tab.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .method-content {
+            display: none;
+        }
+
+        .method-content.active {
+            display: block;
+            animation: card-in 0.3s ease;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input::placeholder {
+            color: var(--muted);
+        }
+
+        .input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        .input.valid {
+            border-color: var(--green);
+        }
+
+        .input.error {
+            border-color: var(--red);
+        }
+
+        textarea.input {
+            resize: vertical;
+            min-height: 80px;
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Diagram */
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 0;
+            margin: 16px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .diagram-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.5s ease;
+        }
+
+        .diagram-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: var(--bg2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .diagram-node.active .diagram-icon {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px var(--glow);
+        }
+
+        .diagram-node.ready .diagram-icon {
+            border-color: var(--green);
+            box-shadow: 0 0 16px var(--green-glow);
+        }
+
+        .diagram-label {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .diagram-node.active .diagram-label {
+            color: var(--accent);
+        }
+
+        .diagram-node.ready .diagram-label {
+            color: var(--green);
+        }
+
+        .diagram-arrow {
+            font-size: 16px;
+            color: var(--muted);
+            transition: color 0.5s;
+        }
+
+        .diagram-arrow.active {
+            color: var(--accent);
+        }
+
+        .diagram-arrow.ready {
+            color: var(--green);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px var(--glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+            width: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Step 3 */
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            animation: success-pop 0.5s ease;
+        }
+
+        @keyframes success-pop {
+            0% {
+                transform: scale(0);
+            }
+
+            60% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .instruction {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .instruction-step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .instruction-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Phone links section */
+        .phone-section {
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .phone-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .phone-hint {
+            font-size: 12px;
+            color: var(--text2);
+            margin-bottom: 14px;
+        }
+
+        .vless-link-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .vless-link-label {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .vless-link-text {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 11px;
+            color: var(--text2);
+            word-break: break-all;
+            line-height: 1.5;
+            user-select: all;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text2);
+            font-size: 11px;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .copy-btn.copied {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* QR code */
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 16px 0;
+        }
+
+        .qr-container canvas {
+            border-radius: 8px;
+            border: 4px solid white;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--card);
+            border: 1px solid var(--green);
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            font-size: 14px;
+            color: var(--text);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+        /* Select */
+        select.input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        @media (max-width: 640px) {
+            .wizard {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="wizard">
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L4 9v14l12 7 12-7V9L16 2z" stroke="currentColor" stroke-width="2" fill="none" />
+                    <path d="M16 8l-6 3.5v7L16 22l6-3.5v-7L16 8z" fill="currentColor" opacity="0.3" />
+                    <circle cx="16" cy="15" r="3" fill="currentColor" />
+                </svg>
+            </div>
+            <div class="logo-name">OwnStep</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-step active" id="prog1"></div>
+            <div class="progress-step" id="prog2"></div>
+            <div class="progress-step" id="prog3"></div>
+        </div>
+
+        <div class="card">
+            <!-- STEP 1: Welcome -->
+            <div class="step active" id="step1">
+                <div class="welcome-icon">👋</div>
+                <h2>Добро пожаловать!</h2>
+                <p class="subtitle">
+                    OwnStep поможет настроить безопасный доступ к интернету.<br>
+                    Это займёт всего пару минут.
+                </p>
+
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🔐</div>
+                        <div class="feature-text">Шифрование трафика</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🌍</div>
+                        <div class="feature-text">Доступ к сайтам</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-text">Работает на телефоне</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-text">Быстрое подключение</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="goToStep(2)">Начать настройку →</button>
+            </div>
+
+            <!-- STEP 2: Server config -->
+            <div class="step" id="step2">
+                <h2>Данные сервера</h2>
+                <p class="subtitle">Попросите хозяина сервера прислать вам ссылку или данные</p>
+
+                <div class="method-tabs">
+                    <button class="method-tab active" onclick="switchMethod('link')">📋 Вставить ссылку</button>
+                    <button class="method-tab" onclick="switchMethod('manual')">✍️ Ввести вручную</button>
+                </div>
+
+                <!-- Method: Link -->
+                <div class="method-content active" id="method-link">
+                    <div class="form-group">
+                        <label>VLESS-ссылка</label>
+                        <textarea class="input" id="vlessLink"
+                            placeholder="vless://uuid@server:port?type=tcp&security=reality&..."
+                            oninput="parseVlessLink()"></textarea>
+                        <div class="form-hint">Вставьте ссылку, которую вам прислали. Все поля заполнятся автоматически.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Method: Manual -->
+                <div class="method-content" id="method-manual">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Адрес сервера</label>
+                            <input class="input" id="serverAddr" placeholder="123.45.67.89" oninput="updateDiagram()">
+                        </div>
+                        <div class="form-group">
+                            <label>Порт</label>
+                            <input class="input" id="serverPort" type="number" placeholder="443" value="443"
+                                oninput="updateDiagram()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>UUID</label>
+                        <input class="input" id="serverUUID" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                            oninput="updateDiagram()">
+                    </div>
+                    <div class="form-group">
+                        <label>Public Key (Reality)</label>
+                        <input class="input" id="serverPubKey" placeholder="Ключ от сервера" oninput="updateDiagram()">
+                    </div>
+                    <div class="form-group">
+                        <label>SNI (обычно не нужно менять)</label>
+                        <input class="input" id="serverSNI" placeholder="www.google.com" value="www.google.com">
+                    </div>
+                </div>
+
+                <!-- Live diagram -->
+                <div class="diagram">
+                    <div class="diagram-node active" id="dn-pc">
+                        <div class="diagram-icon">💻</div>
+                        <div class="diagram-label">Ваш ПК</div>
+                    </div>
+                    <div class="diagram-arrow" id="da-1">→</div>
+                    <div class="diagram-node" id="dn-encrypt">
+                        <div class="diagram-icon">🔐</div>
+                        <div class="diagram-label">Шифрование</div>
+                    </div>
+                    <div class="diagram-arrow" id="da-2">→</div>
+                    <div class="diagram-node" id="dn-server">
+                        <div class="diagram-icon">🇩🇪</div>
+                        <div class="diagram-label" id="dl-server">Сервер</div>
+                    </div>
+                    <div class="diagram-arrow" id="da-3">→</div>
+                    <div class="diagram-node" id="dn-internet">
+                        <div class="diagram-icon">🌐</div>
+                        <div class="diagram-label">Интернет</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary btn-sm" onclick="goToStep(1)">← Назад</button>
+                    <button class="btn btn-primary" id="btnNext2" onclick="goToStep(3)" disabled>Сгенерировать конфиг
+                        →</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Done -->
+            <div class="step" id="step3">
+                <div class="success-icon">✅</div>
+                <h2>Готово!</h2>
+                <p class="subtitle">Конфигурация создана. Осталось запустить.</p>
+
+                <div class="instruction">
+                    <div class="instruction-step">
+                        <div class="instruction-num">1</div>
+                        <div>Нажмите <strong>«Скачать config.json»</strong> и сохраните файл в папку
+                            <strong>OwnStep</strong></div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="instruction-num">2</div>
+                        <div>Запустите <strong>OwnStep.bat</strong> — не закрывайте окно!</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="instruction-num">3</div>
+                        <div>Готово — интернет работает через безопасное соединение 🎉</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="downloadConfig()">📥 Скачать config.json</button>
+
+                <!-- Phone links -->
+                <div class="phone-section">
+                    <h3>📱 Ссылки для телефона</h3>
+                    <p class="phone-hint">Скопируйте ссылку и импортируйте в v2rayNG (Android) или Streisand (iPhone)
+                    </p>
+
+                    <div class="vless-link-box" id="phoneLinkBox">
+                        <div class="vless-link-label">🇩🇪 OwnStep Germany</div>
+                        <div class="vless-link-text" id="phoneLinkText"></div>
+                        <button class="copy-btn" onclick="copyPhoneLink(this)">Копировать</button>
+                    </div>
+
+                    <div class="qr-container" id="qrContainer">
+                        <canvas id="qrCanvas"></canvas>
+                    </div>
+
+                    <button class="btn btn-secondary btn-sm" onclick="goToStep(2)" style="margin-top: 12px;">← Изменить
+                        данные</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== QR Code Generator (minimal, self-contained) =====
+        // Minimal QR Code generator for mode byte encoding
+        const QRCode = (() => {
+            // We use a simple approach: generate QR via a canvas using the library pattern
+            // For maximum portability, we embed a minimal QR encoder
+            function generateQR(text, canvas, size) {
+                // Use the simple QR approach via qrcode-generator logic
+                // Fallback: create a styled text display if QR is complex
+                const ctx = canvas.getContext('2d');
+                canvas.width = size;
+                canvas.height = size;
+
+                // Simple QR encoding using a data URL approach
+                // We'll use a manual implementation
+                try {
+                    const qr = createQR(text);
+                    const moduleCount = qr.length;
+                    const cellSize = Math.floor(size / (moduleCount + 8));
+                    const offset = Math.floor((size - cellSize * moduleCount) / 2);
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.fillStyle = '#000000';
+
+                    for (let r = 0; r < moduleCount; r++) {
+                        for (let c = 0; c < moduleCount; c++) {
+                            if (qr[r][c]) {
+                                ctx.fillRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // Fallback: show text
+                    ctx.fillStyle = '#1a1a2e';
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '12px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('QR: скопируйте ссылку', size / 2, size / 2);
+                }
+            }
+
+            // Minimal QR code matrix generator (numeric/alphanumeric/byte mode)
+            function createQR(data) {
+                const encoded = new TextEncoder().encode(data);
+                const len = encoded.length;
+
+                // Choose version based on data length (byte mode)
+                let version = 1;
+                const capacities = [0, 17, 32, 53, 78, 106, 134, 154, 192, 230, 271, 321, 367, 425, 458, 520, 586, 644, 718, 792, 858];
+                for (let v = 1; v <= 20; v++) {
+                    if (len <= capacities[v]) { version = v; break; }
+                }
+
+                const size = version * 4 + 17;
+                const matrix = Array.from({ length: size }, () => Array(size).fill(null));
+                const reserved = Array.from({ length: size }, () => Array(size).fill(false));
+
+                // Add finder patterns
+                addFinderPattern(matrix, reserved, 0, 0);
+                addFinderPattern(matrix, reserved, size - 7, 0);
+                addFinderPattern(matrix, reserved, 0, size - 7);
+
+                // Add alignment patterns
+                if (version >= 2) {
+                    const positions = getAlignmentPositions(version);
+                    for (const r of positions) {
+                        for (const c of positions) {
+                            if (matrix[r] && matrix[r][c] === null) {
+                                addAlignmentPattern(matrix, reserved, r, c);
+                            }
+                        }
+                    }
+                }
+
+                // Timing patterns
+                for (let i = 8; i < size - 8; i++) {
+                    if (!reserved[6][i]) {
+                        matrix[6][i] = i % 2 === 0;
+                        reserved[6][i] = true;
+                    }
+                    if (!reserved[i][6]) {
+                        matrix[i][6] = i % 2 === 0;
+                        reserved[i][6] = true;
+                    }
+                }
+
+                // Dark module
+                matrix[version * 4 + 9][8] = true;
+                reserved[version * 4 + 9][8] = true;
+
+                // Reserve format info area
+                for (let i = 0; i < 8; i++) {
+                    reserved[8][i] = true;
+                    reserved[8][size - 1 - i] = true;
+                    reserved[i][8] = true;
+                    reserved[size - 1 - i][8] = true;
+                }
+                reserved[8][8] = true;
+
+                // Reserve version info for v >= 7
+                if (version >= 7) {
+                    for (let i = 0; i < 6; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            reserved[i][size - 11 + j] = true;
+                            reserved[size - 11 + j][i] = true;
+                        }
+                    }
+                }
+
+                // Encode data
+                const bits = encodeData(encoded, version);
+
+                // Place data bits
+                placeDataBits(matrix, reserved, bits, size);
+
+                // Apply mask pattern 0 (checkerboard)
+                for (let r = 0; r < size; r++) {
+                    for (let c = 0; c < size; c++) {
+                        if (!reserved[r][c]) {
+                            if ((r + c) % 2 === 0) {
+                                matrix[r][c] = !matrix[r][c];
+                            }
+                        }
+                    }
+                }
+
+                // Add format info (mask 0, EC level L)
+                addFormatInfo(matrix, size, 0);
+
+                // Add version info
+                if (version >= 7) {
+                    addVersionInfo(matrix, size, version);
+                }
+
+                return matrix.map(row => row.map(v => v === true));
+            }
+
+            function addFinderPattern(m, r, row, col) {
+                for (let dr = -1; dr <= 7; dr++) {
+                    for (let dc = -1; dc <= 7; dc++) {
+                        const rr = row + dr, cc = col + dc;
+                        if (rr < 0 || rr >= m.length || cc < 0 || cc >= m.length) continue;
+                        const isOuter = dr === -1 || dr === 7 || dc === -1 || dc === 7;
+                        const isBorder = dr === 0 || dr === 6 || dc === 0 || dc === 6;
+                        const isInner = dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4;
+                        m[rr][cc] = !isOuter && (isBorder || isInner);
+                        r[rr][cc] = true;
+                    }
+                }
+            }
+
+            function addAlignmentPattern(m, r, row, col) {
+                for (let dr = -2; dr <= 2; dr++) {
+                    for (let dc = -2; dc <= 2; dc++) {
+                        const rr = row + dr, cc = col + dc;
+                        if (rr < 0 || rr >= m.length || cc < 0 || cc >= m.length) continue;
+                        if (r[rr][cc]) continue;
+                        const isOuter = Math.abs(dr) === 2 || Math.abs(dc) === 2;
+                        const isCenter = dr === 0 && dc === 0;
+                        m[rr][cc] = isOuter || isCenter;
+                        r[rr][cc] = true;
+                    }
+                }
+            }
+
+            function getAlignmentPositions(version) {
+                if (version === 1) return [];
+                const table = [
+                    [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
+                    [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50], [6, 30, 54],
+                    [6, 32, 58], [6, 34, 62], [6, 26, 46, 66], [6, 26, 48, 70],
+                    [6, 26, 50, 74], [6, 30, 54, 78], [6, 30, 56, 82], [6, 30, 58, 86], [6, 34, 62, 90]
+                ];
+                return table[version - 1] || [6, 6 + Math.floor((version * 4 + 10) / 2)];
+            }
+
+            function encodeData(bytes, version) {
+                const totalCodewords = getDataCodewords(version);
+                let bits = '';
+
+                // Mode indicator: byte mode = 0100
+                bits += '0100';
+
+                // Character count
+                const ccBits = version <= 9 ? 8 : 16;
+                bits += bytes.length.toString(2).padStart(ccBits, '0');
+
+                // Data
+                for (const b of bytes) {
+                    bits += b.toString(2).padStart(8, '0');
+                }
+
+                // Terminator
+                const capacity = totalCodewords * 8;
+                const terminatorLen = Math.min(4, capacity - bits.length);
+                bits += '0'.repeat(terminatorLen);
+
+                // Pad to byte boundary
+                while (bits.length % 8 !== 0) bits += '0';
+
+                // Pad codewords
+                const pads = ['11101100', '00010001'];
+                let pi = 0;
+                while (bits.length < capacity) {
+                    bits += pads[pi % 2];
+                    pi++;
+                }
+
+                return bits;
+            }
+
+            function getDataCodewords(version) {
+                // EC level L data codewords per version
+                const table = [0, 19, 34, 55, 80, 108, 136, 156, 194, 232, 274, 324, 370, 428, 461, 523, 589, 647, 721, 795, 861];
+                return table[version] || 100;
+            }
+
+            function placeDataBits(matrix, reserved, bits, size) {
+                let bitIdx = 0;
+                let upward = true;
+
+                for (let col = size - 1; col >= 0; col -= 2) {
+                    if (col === 6) col = 5; // skip timing
+
+                    const rows = upward
+                        ? Array.from({ length: size }, (_, i) => size - 1 - i)
+                        : Array.from({ length: size }, (_, i) => i);
+
+                    for (const row of rows) {
+                        for (let dc = 0; dc <= 1; dc++) {
+                            const c = col - dc;
+                            if (c < 0 || reserved[row][c]) continue;
+                            matrix[row][c] = bitIdx < bits.length ? bits[bitIdx] === '1' : false;
+                            bitIdx++;
+                        }
+                    }
+                    upward = !upward;
+                }
+            }
+
+            function addFormatInfo(matrix, size, maskPattern) {
+                // Format info for EC level L, mask 0 = 111011111000100
+                const formats = ['111011111000100', '111001011110011', '111110110101010', '111100010011101',
+                    '110011000101111', '110001100011000', '110110001000001', '110100101110110'];
+                const fmt = formats[maskPattern] || formats[0];
+
+                // Place format info
+                const fmtBits = fmt.split('').map(Number);
+
+                // Around top-left finder
+                for (let i = 0; i <= 5; i++) matrix[8][i] = !!fmtBits[i];
+                matrix[8][7] = !!fmtBits[6];
+                matrix[8][8] = !!fmtBits[7];
+                matrix[7][8] = !!fmtBits[8];
+                for (let i = 9; i < 15; i++) matrix[14 - i][8] = !!fmtBits[i];
+
+                // Bottom-left and top-right
+                for (let i = 0; i < 7; i++) matrix[size - 1 - i][8] = !!fmtBits[i];
+                for (let i = 7; i < 15; i++) matrix[8][size - 15 + i] = !!fmtBits[i];
+            }
+
+            function addVersionInfo(matrix, size, version) {
+                if (version < 7) return;
+                const versionInfoTable = [
+                    0, 0, 0, 0, 0, 0, 0,
+                    0b000111110010010100, 0b001000010110111100, 0b001001101010011001,
+                    0b001010010011010011, 0b001011101111110110, 0b001100011101100010,
+                    0b001101100001000111, 0b001110011000001101, 0b001111100100101000,
+                    0b010000101001111110, 0b010001010101011011, 0b010010101100010001,
+                    0b010011010000110100
+                ];
+                const info = versionInfoTable[version];
+                if (!info) return;
+                for (let i = 0; i < 18; i++) {
+                    const bit = !!((info >> i) & 1);
+                    const r = Math.floor(i / 3);
+                    const c = size - 11 + (i % 3);
+                    matrix[r][c] = bit;
+                    matrix[c][r] = bit;
+                }
+            }
+
+            return { generate: generateQR };
+        })();
+
+        // ===== App State =====
+        let currentStep = 1;
+        let serverConfig = { addr: '', port: 443, uuid: '', pubKey: '', sni: 'www.google.com', fp: 'chrome', flow: 'xtls-rprx-vision' };
+
+        // ===== Navigation =====
+        function goToStep(n) {
+            if (n === 3) {
+                // Validate before going to step 3
+                if (!serverConfig.addr || !serverConfig.uuid || !serverConfig.pubKey) {
+                    showToast('⚠️ Заполните все обязательные поля');
+                    return;
+                }
+            }
+
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+
+            for (let i = 1; i <= 3; i++) {
+                const p = document.getElementById('prog' + i);
+                p.classList.remove('active', 'done');
+                if (i < n) p.classList.add('done');
+                else if (i === n) p.classList.add('active');
+            }
+
+            currentStep = n;
+
+            if (n === 3) {
+                generatePhoneLink();
+            }
+        }
+
+        // ===== Method tabs =====
+        function switchMethod(method) {
+            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.method-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById('method-' + method).classList.add('active');
+        }
+
+        // ===== VLESS Link Parser =====
+        function parseVlessLink() {
+            const link = document.getElementById('vlessLink').value.trim();
+            const input = document.getElementById('vlessLink');
+
+            if (!link.startsWith('vless://')) {
+                input.classList.remove('valid');
+                input.classList.add('error');
+                updateDiagram();
+                return;
+            }
+
+            try {
+                // Parse: vless://uuid@host:port?params#name
+                const stripped = link.replace('vless://', '');
+                const [mainPart] = stripped.split('#');
+                const [userHost, queryString] = mainPart.split('?');
+                const [uuid, hostPort] = userHost.split('@');
+                const [host, port] = hostPort.split(':');
+
+                const params = new URLSearchParams(queryString);
+
+                serverConfig.uuid = uuid;
+                serverConfig.addr = host;
+                serverConfig.port = parseInt(port) || 443;
+                serverConfig.pubKey = params.get('pbk') || '';
+                serverConfig.sni = params.get('sni') || 'www.google.com';
+                serverConfig.fp = params.get('fp') || 'chrome';
+                serverConfig.flow = params.get('flow') || 'xtls-rprx-vision';
+
+                // Fill manual fields too
+                document.getElementById('serverAddr').value = serverConfig.addr;
+                document.getElementById('serverPort').value = serverConfig.port;
+                document.getElementById('serverUUID').value = serverConfig.uuid;
+                document.getElementById('serverPubKey').value = serverConfig.pubKey;
+                document.getElementById('serverSNI').value = serverConfig.sni;
+
+                input.classList.remove('error');
+                input.classList.add('valid');
+
+                updateDiagram();
+            } catch (e) {
+                input.classList.remove('valid');
+                input.classList.add('error');
+            }
+        }
+
+        // ===== Manual input sync =====
+        function updateDiagram() {
+            // Read from manual fields
+            const addr = document.getElementById('serverAddr').value.trim();
+            const port = document.getElementById('serverPort').value.trim();
+            const uuid = document.getElementById('serverUUID').value.trim();
+            const pubKey = document.getElementById('serverPubKey').value.trim();
+            const sni = document.getElementById('serverSNI').value.trim();
+
+            if (addr) serverConfig.addr = addr;
+            if (port) serverConfig.port = parseInt(port);
+            if (uuid) serverConfig.uuid = uuid;
+            if (pubKey) serverConfig.pubKey = pubKey;
+            if (sni) serverConfig.sni = sni;
+
+            // Update diagram
+            const hasAddr = !!serverConfig.addr;
+            const hasUUID = !!serverConfig.uuid;
+            const hasKey = !!serverConfig.pubKey;
+            const allGood = hasAddr && hasUUID && hasKey;
+
+            setNodeState('dn-encrypt', hasUUID ? (allGood ? 'ready' : 'active') : '');
+            setNodeState('dn-server', hasAddr ? (allGood ? 'ready' : 'active') : '');
+            setNodeState('dn-internet', allGood ? 'ready' : '');
+
+            setArrowState('da-1', hasUUID ? (allGood ? 'ready' : 'active') : '');
+            setArrowState('da-2', hasAddr ? (allGood ? 'ready' : 'active') : '');
+            setArrowState('da-3', allGood ? 'ready' : '');
+
+            if (hasAddr) {
+                document.getElementById('dl-server').textContent = serverConfig.addr;
+            } else {
+                document.getElementById('dl-server').textContent = 'Сервер';
+            }
+
+            // Enable/disable next button
+            document.getElementById('btnNext2').disabled = !allGood;
+        }
+
+        function setNodeState(id, state) {
+            const el = document.getElementById(id);
+            el.classList.remove('active', 'ready');
+            if (state) el.classList.add(state);
+        }
+        function setArrowState(id, state) {
+            const el = document.getElementById(id);
+            el.classList.remove('active', 'ready');
+            if (state) el.classList.add(state);
+        }
+
+        // ===== Generate config =====
+        function generateConfig() {
+            return {
+                log: { loglevel: "warning" },
+                inbounds: [
+                    {
+                        tag: "socks-de", port: 10808, listen: "127.0.0.1", protocol: "socks",
+                        settings: { auth: "noauth", udp: true },
+                        sniffing: { enabled: true, destOverride: ["http", "tls", "quic"] }
+                    },
+                    {
+                        tag: "http-de", port: 10809, listen: "127.0.0.1", protocol: "http",
+                        settings: {},
+                        sniffing: { enabled: true, destOverride: ["http", "tls", "quic"] }
+                    }
+                ],
+                outbounds: [
+                    {
+                        tag: "proxy-de", protocol: "vless",
+                        settings: { vnext: [{ address: serverConfig.addr, port: serverConfig.port, users: [{ id: serverConfig.uuid, encryption: "none", flow: serverConfig.flow }] }] },
+                        streamSettings: { network: "tcp", security: "reality", realitySettings: { show: false, fingerprint: serverConfig.fp, serverName: serverConfig.sni, publicKey: serverConfig.pubKey, shortId: "" } }
+                    },
+                    { tag: "direct", protocol: "freedom", settings: {} },
+                    { tag: "block", protocol: "blackhole", settings: {} }
+                ],
+                routing: {
+                    domainStrategy: "AsIs",
+                    rules: [
+                        { type: "field", ip: ["geoip:private", "127.0.0.0/8"], outboundTag: "direct" },
+                        { type: "field", port: "53", outboundTag: "direct" },
+                        { type: "field", inboundTag: ["socks-de", "http-de"], outboundTag: "proxy-de" }
+                    ]
+                }
+            };
+        }
+
+        function downloadConfig() {
+            const config = generateConfig();
+            const json = JSON.stringify(config, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ config.json скачан!');
+        }
+
+        // ===== Phone Link =====
+        function generateVlessLink() {
+            const s = serverConfig;
+            return `vless://${s.uuid}@${s.addr}:${s.port}?type=tcp&security=reality&sni=${s.sni}&pbk=${s.pubKey}&flow=${s.flow}&fp=${s.fp}#OwnStep_DE`;
+        }
+
+        function generatePhoneLink() {
+            const link = generateVlessLink();
+            document.getElementById('phoneLinkText').textContent = link;
+
+            // Generate QR code
+            try {
+                QRCode.generate(link, document.getElementById('qrCanvas'), 200);
+            } catch (e) {
+                console.log('QR generation error:', e);
+            }
+        }
+
+        function copyPhoneLink(btn) {
+            const link = document.getElementById('phoneLinkText').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                btn.textContent = '✓ Скопировано';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Копировать';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // ===== Toast =====
+        function showToast(msg) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "ShadowLink Proxy",
+    "version": "2.0",
+    "description": "Маршрутизация: DE для заблокированных, US для Gemini",
+    "permissions": [
+        "proxy",
+        "storage",
+        "activeTab",
+        "tabs"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "ShadowLink Proxy"
+    }
+}
