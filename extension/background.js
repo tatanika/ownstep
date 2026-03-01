@@ -1,4 +1,4 @@
-// OwnStep Proxy Extension - Background Script
+// OwnStep Proxy Extension - Chrome Background Script (Single Proxy)
 
 const DEFAULT_DOMAINS = [
     // Video
@@ -18,6 +18,10 @@ const DEFAULT_DOMAINS = [
     // AI
     'openai.com', 'chat.openai.com',
     'claude.ai', 'anthropic.com',
+    // Google
+    'google.com', 'googleapis.com', 'gstatic.com',
+    'gmail.com', 'googleusercontent.com',
+    'gemini.google.com', 'aistudio.google.com',
     // Other blocked
     'bbc.com', 'bbc.co.uk',
     'soundcloud.com',
@@ -28,7 +32,7 @@ const DEFAULT_DOMAINS = [
 ];
 
 const PROXY_HOST = '127.0.0.1';
-const PROXY_PORT_DE = 10808;
+const PROXY_PORT = 10808;
 
 let customDomains = [];
 let excludedDefaults = [];
@@ -49,7 +53,7 @@ function generatePacScript() {
     }).join('\n    ');
 
     return `function FindProxyForURL(url, host) {
-    var proxy = "SOCKS5 ${PROXY_HOST}:${PROXY_PORT_DE}; SOCKS ${PROXY_HOST}:${PROXY_PORT_DE}; DIRECT";
+    var proxy = "SOCKS5 ${PROXY_HOST}:${PROXY_PORT}; SOCKS ${PROXY_HOST}:${PROXY_PORT}; DIRECT";
     ${domainChecks}
     return "DIRECT";
   }`;
@@ -60,14 +64,10 @@ function applyProxy() {
     chrome.proxy.settings.set({
         value: {
             mode: 'pac_script',
-            pacScript: {
-                data: pac
-            }
+            pacScript: { data: pac }
         },
         scope: 'regular'
-    }, () => {
-        updateBadge();
-    });
+    }, updateBadge);
 }
 
 function updateBadge() {
@@ -105,9 +105,7 @@ function saveAndApply() {
         customDomains: customDomains,
         excludedDefaults: excludedDefaults,
         isEnabled: isEnabled
-    }, () => {
-        applyProxy();
-    });
+    }, applyProxy);
 }
 
 // Load saved settings
