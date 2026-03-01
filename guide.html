@@ -569,6 +569,49 @@
             border: 1px solid rgba(148, 163, 184, 0.2);
         }
 
+        /* OS Tab Switcher */
+        .os-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .os-tab {
+            flex: 1;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(15, 23, 42, 0.4);
+            color: var(--muted);
+            border: none;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+        }
+
+        .os-tab:hover {
+            background: rgba(15, 23, 42, 0.7);
+            color: var(--text2);
+        }
+
+        .os-tab.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            box-shadow: inset 0 -2px 0 var(--accent);
+        }
+
+        .os-content {
+            display: none;
+        }
+
+        .os-content.active {
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .guide {
@@ -884,95 +927,210 @@
                 </div>
             </div>
             <div class="step-body">
-                <p>Теперь настроим VPN на вашем компьютере с помощью мастера OwnStep.</p>
+                <p>Теперь настроим VPN на вашем компьютере. Выберите вашу операционную систему:</p>
 
-                <div class="substep">
-                    <div class="substep-icon">1️⃣</div>
-                    <div class="substep-content">
-                        <strong>Откройте файл setup.html</strong>
-                        <span>Он находится в папке OwnStep. Просто дважды кликните по нему — откроется в
-                            браузере.</span>
+                <!-- OS Tab Switcher -->
+                <div class="os-tabs">
+                    <button class="os-tab active" onclick="switchOS('windows')">🪟 Windows</button>
+                    <button class="os-tab" onclick="switchOS('mac')">🍎 macOS</button>
+                </div>
+
+                <!-- ====== WINDOWS CONTENT ====== -->
+                <div class="os-content active" id="os-windows">
+                    <div class="substep">
+                        <div class="substep-icon">1️⃣</div>
+                        <div class="substep-content">
+                            <strong>Откройте файл setup.html</strong>
+                            <span>Он находится в папке OwnStep. Просто дважды кликните по нему — откроется в
+                                браузере.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">2️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Начать настройку»</strong>
+                            <span>На первом экране нажмите фиолетовую кнопку.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">3️⃣</div>
+                        <div class="substep-content">
+                            <strong>Вставьте вашу VLESS-ссылку</strong>
+                            <span>На втором экране выберите «Вставить ссылку» и вставьте ту ссылку, которую скопировали
+                                с сервера.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">4️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Сгенерировать конфиг»</strong>
+                            <span>Скачается файл config.json — положите его в папку OwnStep (с заменой, если
+                                спросит).</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">5️⃣</div>
+                        <div class="substep-content">
+                            <strong>Запустите OwnStep.bat</strong>
+                            <span>Дважды кликните по файлу <code>OwnStep.bat</code> — VPN включится в фоновом
+                                режиме!</span>
+                        </div>
+                    </div>
+
+                    <p
+                        style="margin-top: 32px; margin-bottom: 16px; color: #fff; font-size: 16px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                        🧩 Установка расширения в браузер</p>
+                    <p style="margin-bottom: 20px;">Сам по себе VPN уже работает, но чтобы трафик из браузера
+                        направлялся
+                        через него, нужно установить
+                        наше расширение (оно позволит открывать заблокированные сайты через VPN, а российские —
+                        напрямую).
+                    </p>
+
+                    <div class="substep">
+                        <div class="substep-icon">🌐</div>
+                        <div class="substep-content">
+                            <strong>Для Chrome:</strong>
+                            <span>Перейдите по адресу <code>chrome://extensions/</code>. В правом верхнем углу включите
+                                ползунок «Режим разработчика». Нажмите кнопку «Загрузить распакованное расширение» и
+                                выберите папку <code>extension-chrome</code> из папки OwnStep.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">🔴</div>
+                        <div class="substep-content">
+                            <strong>Для Яндекс.Браузера:</strong>
+                            <span>Перейдите по адресу <code>browser://extensions/</code>. В правом верхнем углу включите
+                                «Режим разработчика». Нажмите «Загрузить распакованное расширение» и выберите папку
+                                <code>extension</code> (находится внутри папки проекта).</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">🦊</div>
+                        <div class="substep-content">
+                            <strong>Для Firefox:</strong>
+                            <span>Перейдите по адресу <code>about:debugging</code>, выберите слева «This Firefox» (или
+                                «Этот
+                                Firefox») → Нажмите «Load Temporary Add-on» (Загрузить временное дополнение). Выберите
+                                файл
+                                <code>manifest.json</code> из папки <code>extension-firefox</code>.</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <div class="info-icon">✅</div>
+                        <div>
+                            <strong>Готово!</strong> Теперь ваш браузер использует умный VPN. Заблокированные сайты
+                            (Instagram, Netflix, Discord и др.) будут открываться автоматически.
+                        </div>
                     </div>
                 </div>
 
-                <div class="substep">
-                    <div class="substep-icon">2️⃣</div>
-                    <div class="substep-content">
-                        <strong>Нажмите «Начать настройку»</strong>
-                        <span>На первом экране нажмите фиолетовую кнопку.</span>
+                <!-- ====== macOS CONTENT ====== -->
+                <div class="os-content" id="os-mac">
+                    <div class="substep">
+                        <div class="substep-icon">1️⃣</div>
+                        <div class="substep-content">
+                            <strong>Откройте файл setup.html</strong>
+                            <span>Он находится в папке OwnStep. Дважды кликните — откроется в браузере.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">3️⃣</div>
-                    <div class="substep-content">
-                        <strong>Вставьте вашу VLESS-ссылку</strong>
-                        <span>На втором экране выберите «Вставить ссылку» и вставьте ту ссылку, которую скопировали
-                            с сервера.</span>
+                    <div class="substep">
+                        <div class="substep-icon">2️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Начать настройку»</strong>
+                            <span>На первом экране нажмите фиолетовую кнопку.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">4️⃣</div>
-                    <div class="substep-content">
-                        <strong>Нажмите «Сгенерировать конфиг»</strong>
-                        <span>Скачается файл config.json — положите его в папку OwnStep (с заменой, если
-                            спросит).</span>
+                    <div class="substep">
+                        <div class="substep-icon">3️⃣</div>
+                        <div class="substep-content">
+                            <strong>Вставьте вашу VLESS-ссылку</strong>
+                            <span>На втором экране выберите «Вставить ссылку» и вставьте ту ссылку, которую скопировали
+                                с сервера.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">5️⃣</div>
-                    <div class="substep-content">
-                        <strong>Запустите OwnStep.bat</strong>
-                        <span>Дважды кликните по файлу OwnStep.bat — VPN включится в фоновом режиме!</span>
+                    <div class="substep">
+                        <div class="substep-icon">4️⃣</div>
+                        <div class="substep-content">
+                            <strong>Нажмите «Сгенерировать конфиг»</strong>
+                            <span>Скачается файл config.json — положите его в папку OwnStep.</span>
+                        </div>
                     </div>
-                </div>
 
-                <p
-                    style="margin-top: 32px; margin-bottom: 16px; color: #fff; font-size: 16px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-                    🧩 Установка расширения в браузер</p>
-                <p style="margin-bottom: 20px;">Сам по себе VPN уже работает, но чтобы трафик из браузера направлялся
-                    через него, нужно установить
-                    наше расширение (оно позволит открывать заблокированные сайты через VPN, а российские — напрямую).
-                </p>
-
-                <div class="substep">
-                    <div class="substep-icon">🌐</div>
-                    <div class="substep-content">
-                        <strong>Для Chrome:</strong>
-                        <span>Перейдите по адресу <code>chrome://extensions/</code>. В правом верхнем углу включите
-                            ползунок «Режим разработчика». Нажмите кнопку «Загрузить распакованное расширение» и
-                            выберите папку <code>extension-chrome</code> из папки OwnStep.</span>
+                    <div class="substep">
+                        <div class="substep-icon">5️⃣</div>
+                        <div class="substep-content">
+                            <strong>Разрешите запуск скрипта (только первый раз)</strong>
+                            <span>Откройте Терминал (Finder → Программы → Утилиты → Терминал), перетащите файл
+                                <code>OwnStep-mac.command</code> в окно Терминала и нажмите Enter. Или кликните правой
+                                кнопкой → «Открыть» → «Открыть».
+                                macOS может спросить разрешение — нажмите «Открыть».</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">🔴</div>
-                    <div class="substep-content">
-                        <strong>Для Яндекс.Браузера:</strong>
-                        <span>Перейдите по адресу <code>browser://extensions/</code>. В правом верхнем углу включите
-                            «Режим разработчика». Нажмите «Загрузить распакованное расширение» и выберите папку
-                            <code>extension</code> (находится внутри папки проекта).</span>
+                    <div class="substep">
+                        <div class="substep-icon">6️⃣</div>
+                        <div class="substep-content">
+                            <strong>Запустите OwnStep-mac.command</strong>
+                            <span>Дважды кликните по файлу <code>OwnStep-mac.command</code> — откроется Терминал и VPN
+                                включится!
+                                Не закрывайте это окно.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">🦊</div>
-                    <div class="substep-content">
-                        <strong>Для Firefox:</strong>
-                        <span>Перейдите по адресу <code>about:debugging</code>, выберите слева «This Firefox» (или «Этот
-                            Firefox») → Нажмите «Load Temporary Add-on» (Загрузить временное дополнение). Выберите файл
-                            <code>manifest.json</code> из папки <code>extension-firefox</code>.</span>
+                    <div class="info-box warning">
+                        <div class="info-icon">⚠️</div>
+                        <div>Если macOS показывает ошибку «не удаётся открыть, так как разработчик не идентифицирован» —
+                            нажмите правой кнопкой на файл → «Открыть» → «Открыть». Или в Системных настройках →
+                            Конфиденциальность и безопасность → нажмите «Всё равно открыть».</div>
                     </div>
-                </div>
 
-                <div class="info-box success">
-                    <div class="info-icon">✅</div>
-                    <div>
-                        <strong>Готово!</strong> Теперь ваш браузер использует умный VPN. Заблокированные сайты
-                        (Instagram, Netflix, Discord и др.) будут открываться автоматически. Вы можете кликнуть на
-                        иконку OwnStep в панели расширений браузера, чтобы добавить свои сайты.
+                    <p
+                        style="margin-top: 32px; margin-bottom: 16px; color: #fff; font-size: 16px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                        🧩 Установка расширения в браузер</p>
+                    <p style="margin-bottom: 20px;">На Mac не работает Safari-расширение (Apple требует аккаунт
+                        разработчика). Установите
+                        <strong>Chrome</strong> или <strong>Firefox</strong> — они бесплатны и наше расширение с ними
+                        работает.
+                    </p>
+
+                    <div class="substep">
+                        <div class="substep-icon">🌐</div>
+                        <div class="substep-content">
+                            <strong>Для Chrome:</strong>
+                            <span>Перейдите по адресу <code>chrome://extensions/</code>. Включите «Developer mode»
+                                (Режим разработчика)
+                                вверху справа. Нажмите «Load unpacked» (Загрузить распакованное) и выберите папку
+                                <code>extension-chrome</code> из папки OwnStep.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">🦊</div>
+                        <div class="substep-content">
+                            <strong>Для Firefox:</strong>
+                            <span>Перейдите по адресу <code>about:debugging</code>, выберите «This Firefox» →
+                                «Load Temporary Add-on». Выберите файл <code>manifest.json</code> из папки
+                                <code>extension-firefox</code>.</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <div class="info-icon">✅</div>
+                        <div>
+                            <strong>Готово!</strong> Теперь ваш браузер использует умный VPN. Заблокированные сайты
+                            (Instagram, Netflix, Discord и др.) будут открываться автоматически.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1025,6 +1183,21 @@
     </div>
 
     <script>
+        // OS Tab Switcher
+        function switchOS(os) {
+            document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('os-' + os).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Auto-detect OS
+        if (navigator.platform.indexOf('Mac') > -1 || navigator.userAgent.indexOf('Mac') > -1) {
+            switchOS('mac');
+            document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.os-tab')[1].classList.add('active');
+        }
+
         function copyCommand() {
             const text = document.getElementById('installCommand').textContent;
             navigator.clipboard.writeText(text).then(() => {
