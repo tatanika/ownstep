@@ -106,12 +106,34 @@ function renderCustom() {
 
 function renderDefault() {
     if (!state.defaultDomains) return;
-    $('defaultList').innerHTML = state.defaultDomains.map(d => `
-    <div class="domain-item">
-      <span class="name default">${d}</span>
-      <span class="tag">авто</span>
-    </div>
-  `).join('');
+    const excluded = state.excludedDefaults || [];
+    $('defaultList').innerHTML = state.defaultDomains.map(d => {
+        const isExcluded = excluded.includes(d);
+        if (isExcluded) {
+            return `<div class="domain-item">
+              <span class="name default" style="text-decoration:line-through;opacity:0.4">${d}</span>
+              <button class="restore-btn" data-domain="${d}" title="Вернуть">↩</button>
+            </div>`;
+        }
+        return `<div class="domain-item">
+          <span class="name default">${d}</span>
+          <button class="remove-default-btn" data-domain="${d}" title="Убрать">✕</button>
+        </div>`;
+    }).join('');
+    $('defaultList').querySelectorAll('.remove-default-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ action: 'removeDefault', domain: b.dataset.domain }, r => {
+                if (r && r.success) { state.excludedDefaults = r.excludedDefaults; renderDefault(); init(); }
+            });
+        });
+    });
+    $('defaultList').querySelectorAll('.restore-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ action: 'restoreDefault', domain: b.dataset.domain }, r => {
+                if (r && r.success) { state.excludedDefaults = r.excludedDefaults; renderDefault(); init(); }
+            });
+        });
+    });
 }
 
 init();

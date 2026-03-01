@@ -1,137 +1,139 @@
-// OwnStep Proxy Extension - Popup Script
+// OwnStep Proxy - Popup Script (Single Proxy)
 
-const mainToggle = document.getElementById('mainToggle');
-const currentDomain = document.getElementById('currentDomain');
-const currentStatus = document.getElementById('currentStatus');
-const toggleSiteBtn = document.getElementById('toggleSiteBtn');
-const customInput = document.getElementById('customInput');
-const addCustomBtn = document.getElementById('addCustomBtn');
-const customList = document.getElementById('customList');
-const defaultList = document.getElementById('defaultList');
+const $ = id => document.getElementById(id);
 
 let state = {};
-let tabDomain = '';
+let tabInfo = {};
 
 function init() {
-    chrome.runtime.sendMessage({ action: 'getState' }, (response) => {
-        state = response;
-        mainToggle.classList.toggle('active', state.isEnabled);
-        renderDefaultList();
-        renderCustomList();
+    chrome.runtime.sendMessage({ action: 'getState' }, r => {
+        state = r;
+        $('mainToggle').classList.toggle('active', state.isEnabled);
+        renderDefault();
+        renderCustom();
     });
 
-    chrome.runtime.sendMessage({ action: 'getCurrentTabDomain' }, (response) => {
-        if (response && response.domain) {
-            tabDomain = response.domain;
-            currentDomain.textContent = response.domain;
-            if (response.isProxied) {
-                currentStatus.textContent = '🇩🇪 Через Германию';
-                currentStatus.className = 'status proxied';
-                if (response.isDefault) {
-                    toggleSiteBtn.textContent = 'Автоматический (нельзя убрать)';
-                    toggleSiteBtn.disabled = true;
-                    toggleSiteBtn.className = 'btn btn-add';
+    chrome.runtime.sendMessage({ action: 'getCurrentTabDomain' }, r => {
+        tabInfo = r || {};
+        if (r && r.domain) {
+            $('siteDomain').textContent = r.domain;
+            if (r.isProxied) {
+                $('siteStatus').textContent = '🔒 Через прокси';
+                $('siteStatus').className = 'site-status status-proxied';
+                if (r.isDefault) {
+                    $('btnAdd').style.display = 'none';
+                    $('btnRemove').style.display = 'none';
+                    $('siteStatus').textContent += ' (авто)';
                 } else {
-                    toggleSiteBtn.textContent = '✕ Убрать из прокси';
-                    toggleSiteBtn.disabled = false;
-                    toggleSiteBtn.className = 'btn btn-remove';
+                    $('btnAdd').style.display = 'none';
+                    $('btnRemove').style.display = '';
                 }
             } else {
-                currentStatus.textContent = '🇷🇺 Напрямую (Россия)';
-                currentStatus.className = 'status direct';
-                toggleSiteBtn.textContent = '+ Добавить в прокси (🇩🇪)';
-                toggleSiteBtn.disabled = false;
-                toggleSiteBtn.className = 'btn btn-add';
+                $('siteStatus').textContent = '🌐 Напрямую';
+                $('siteStatus').className = 'site-status status-direct';
+                $('btnAdd').style.display = '';
+                $('btnRemove').style.display = 'none';
             }
-        } else {
-            currentDomain.textContent = '—';
-            currentStatus.textContent = 'Нет активной вкладки';
-            toggleSiteBtn.disabled = true;
         }
     });
 }
 
-mainToggle.addEventListener('click', () => {
-    chrome.runtime.sendMessage({ action: 'toggle' }, (response) => {
-        state.isEnabled = response.isEnabled;
-        mainToggle.classList.toggle('active', state.isEnabled);
+$('mainToggle').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ action: 'toggle' }, r => {
+        state.isEnabled = r.isEnabled;
+        $('mainToggle').classList.toggle('active', state.isEnabled);
     });
 });
 
-toggleSiteBtn.addEventListener('click', () => {
-    chrome.runtime.sendMessage({ action: 'getCurrentTabDomain' }, (response) => {
-        if (response.isProxied && !response.isDefault) {
-            chrome.runtime.sendMessage({ action: 'removeDomain', domain: response.domain }, (res) => {
-                if (res.success) {
-                    state.customDomains = res.customDomains;
-                    renderCustomList();
-                    init();
-                }
-            });
-        } else if (!response.isProxied) {
-            chrome.runtime.sendMessage({ action: 'addCurrentTab' }, (res) => {
-                if (res.success) {
-                    state.customDomains = res.customDomains;
-                    renderCustomList();
-                    init();
-                }
-            });
-        }
+$('btnAdd').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ action: 'addCurrentTab' }, r => {
+        if (r && r.success) { state.customDomains = r.customDomains; renderCustom(); init(); }
     });
 });
 
-addCustomBtn.addEventListener('click', () => {
-    const domain = customInput.value.trim();
-    if (domain) {
-        chrome.runtime.sendMessage({ action: 'addDomain', domain }, (res) => {
-            if (res.success) {
-                state.customDomains = res.customDomains;
-                customInput.value = '';
-                renderCustomList();
-                init();
+$('btnRemove').addEventListener('click', () => {
+    if (tabInfo.domain) {
+        chrome.runtime.sendMessage({ action: 'removeDomain', domain: tabInfo.domain }, r => {
+            if (r && r.success) {
+                state.customDomains = r.customDomains;
+                renderCustom(); init();
             }
         });
     }
 });
 
-customInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') addCustomBtn.click();
+$('addBtn').addEventListener('click', () => addManual());
+$('customInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addManual();
 });
 
-function renderCustomList() {
-    if (!state.customDomains || state.customDomains.length === 0) {
-        customList.innerHTML = '<div style="padding:6px 0;font-size:11px;color:#555;">Пусто — добавьте свои домены</div>';
+function addManual() {
+    const d = $('customInput').value.trim();
+    if (d) {
+        chrome.runtime.sendMessage({ action: 'addDomain', domain: d }, r => {
+            if (r && r.success) {
+                state.customDomains = r.customDomains;
+                $('customInput').value = '';
+                renderCustom(); init();
+            }
+        });
+    }
+}
+
+function renderCustom() {
+    const domains = state.customDomains || [];
+    if (domains.length === 0) {
+        $('customList').innerHTML = '<div style="padding:4px 0;font-size:11px;color:#444">Пусто</div>';
         return;
     }
-    customList.innerHTML = state.customDomains.map(d => `
+    $('customList').innerHTML = domains.map(d => `
     <div class="domain-item">
       <span class="name">${d}</span>
       <button class="remove-btn" data-domain="${d}">✕</button>
     </div>
   `).join('');
-
-    customList.querySelectorAll('.remove-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const domain = btn.dataset.domain;
-            chrome.runtime.sendMessage({ action: 'removeDomain', domain }, (res) => {
-                if (res.success) {
-                    state.customDomains = res.customDomains;
-                    renderCustomList();
-                    init();
+    $('customList').querySelectorAll('.remove-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ action: 'removeDomain', domain: b.dataset.domain }, r => {
+                if (r && r.success) {
+                    state.customDomains = r.customDomains;
+                    renderCustom(); init();
                 }
             });
         });
     });
 }
 
-function renderDefaultList() {
+function renderDefault() {
     if (!state.defaultDomains) return;
-    defaultList.innerHTML = state.defaultDomains.map(d => `
-    <div class="domain-item">
-      <span class="name default">${d}</span>
-      <span class="tag">авто</span>
-    </div>
-  `).join('');
+    const excluded = state.excludedDefaults || [];
+    $('defaultList').innerHTML = state.defaultDomains.map(d => {
+        const isExcluded = excluded.includes(d);
+        if (isExcluded) {
+            return `<div class="domain-item">
+              <span class="name default" style="text-decoration:line-through;opacity:0.4">${d}</span>
+              <button class="restore-btn" data-domain="${d}" title="Вернуть">↩</button>
+            </div>`;
+        }
+        return `<div class="domain-item">
+          <span class="name default">${d}</span>
+          <button class="remove-default-btn" data-domain="${d}" title="Убрать">✕</button>
+        </div>`;
+    }).join('');
+    $('defaultList').querySelectorAll('.remove-default-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ action: 'removeDefault', domain: b.dataset.domain }, r => {
+                if (r && r.success) { state.excludedDefaults = r.excludedDefaults; renderDefault(); init(); }
+            });
+        });
+    });
+    $('defaultList').querySelectorAll('.restore-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ action: 'restoreDefault', domain: b.dataset.domain }, r => {
+                if (r && r.success) { state.excludedDefaults = r.excludedDefaults; renderDefault(); init(); }
+            });
+        });
+    });
 }
 
 init();

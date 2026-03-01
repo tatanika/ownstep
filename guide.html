@@ -288,6 +288,12 @@
             margin-bottom: 3px;
         }
 
+        .substep-content span strong {
+            display: inline;
+            font-size: inherit;
+            margin-bottom: 0;
+        }
+
         .substep-content span {
             font-size: 13px;
             color: var(--text2);
@@ -777,67 +783,132 @@
                 </div>
             </div>
             <div class="step-body">
-                <p>Прежде чем что-то устанавливать, нужно подключиться к вашему арендованному серверу:</p>
+                <p>Прежде чем что-то устанавливать, нужно подключиться к вашему арендованному серверу. Выберите вашу ОС:
+                </p>
 
-                <div class="substep">
-                    <div class="substep-icon">1️⃣</div>
-                    <div class="substep-content">
-                        <strong>Откройте папку ownstep на компьютере</strong>
-                        <span>Откройте папку ownstep на вашем компьютере.</span>
+                <!-- OS Tab Switcher for Step 0 -->
+                <div class="os-tabs">
+                    <button class="os-tab active" onclick="switchOS0('windows0')">🪟 Windows</button>
+                    <button class="os-tab" onclick="switchOS0('mac0')">🍎 macOS</button>
+                </div>
+
+                <!-- ====== WINDOWS ====== -->
+                <div class="os-content active" id="os-windows0">
+                    <div class="substep">
+                        <div class="substep-icon">1️⃣</div>
+                        <div class="substep-content">
+                            <strong>Откройте папку ownstep на компьютере</strong>
+                            <span>Откройте папку ownstep на вашем компьютере.</span>
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">2️⃣</div>
+                        <div class="substep-content">
+                            <strong>Запустите PowerShell</strong>
+                            <span>В проводнике нажмите «Файл» -&gt; «Запустить PowerShell».</span>
+                        </div>
+                    </div>
+
+                    <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
+                        <img src="images/ssh-open.png" alt="Открытие PowerShell" class="zoomable-image"
+                            style="width: 100%; display: block;">
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div>
+                            <strong>Как работать в PowerShell:</strong><br>
+                            • Чтобы скопировать текст: выделите его мышкой и нажмите правую кнопку мыши (или Enter).<br>
+                            • Чтобы вставить текст: нажмите правую кнопку мыши в любом месте окна.
+                        </div>
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">3️⃣</div>
+                        <div class="substep-content">
+                            <strong>Введите команду для входа</strong>
+                            <span>Введите команду: <code>ssh root@IP_ВАШЕГО_СЕРВЕРА</code> (цифры вам даст хостинг).
+                                Пример:
+                                <code>ssh root@123.45.678.999</code></span>
+                        </div>
+                    </div>
+
+                    <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
+                        <img src="images/ssh-login.png" alt="Ввод команды ssh root@ip" class="zoomable-image"
+                            style="width: 100%; display: block;">
+                    </div>
+
+                    <div class="substep">
+                        <div class="substep-icon">4️⃣</div>
+                        <div class="substep-content">
+                            <strong>Вставьте пароль</strong>
+                            <span>Вставьте пароль (нажатием правой кнопки мыши) и нажмите Enter (пароль также находится
+                                на
+                                хостинге).<br>
+                                <strong>Важно:</strong> При вводе пароля символы не отображаются! Это нормально. Введите
+                                вслепую и нажмите Enter. Вас должно пустить на
+                                сервер и в начале строки появится <code>root@ЛогинСервера:</code></span>
+                        </div>
+                    </div>
+
+                    <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
+                        <img src="images/ssh-password.png" alt="Ввод пароля SSH в PowerShell" class="zoomable-image"
+                            style="width: 100%; display: block;">
                     </div>
                 </div>
 
-                <div class="substep">
-                    <div class="substep-icon">2️⃣</div>
-                    <div class="substep-content">
-                        <strong>Запустите PowerShell</strong>
-                        <span>В проводнике нажмите «Файл» -&gt; «Запустить PowerShell».</span>
+                <!-- ====== macOS ====== -->
+                <div class="os-content" id="os-mac0">
+                    <div class="substep">
+                        <div class="substep-icon">1️⃣</div>
+                        <div class="substep-content">
+                            <strong>Откройте Терминал</strong>
+                            <span>Нажмите <strong>Cmd + Пробел</strong>, наберите <strong>Terminal</strong> и нажмите
+                                Enter.
+                                Или откройте через Finder → Программы → Утилиты → Терминал.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
-                    <img src="images/ssh-open.png" alt="Открытие PowerShell" class="zoomable-image"
-                        style="width: 100%; display: block;">
-                </div>
-
-                <div class="info-box">
-                    <div class="info-icon">💡</div>
-                    <div>
-                        <strong>Как работать в PowerShell:</strong><br>
-                        • Чтобы скопировать текст: выделите его мышкой и нажмите правую кнопку мыши (или Enter).<br>
-                        • Чтобы вставить текст: нажмите правую кнопку мыши в любом месте окна.
+                    <div class="substep">
+                        <div class="substep-icon">2️⃣</div>
+                        <div class="substep-content">
+                            <strong>Введите команду для входа</strong>
+                            <span>Введите команду: <code>ssh root@IP_ВАШЕГО_СЕРВЕРА</code> (цифры вам даст хостинг).
+                                Пример:
+                                <code>ssh root@123.45.678.999</code></span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="substep">
-                    <div class="substep-icon">3️⃣</div>
-                    <div class="substep-content">
-                        <strong>Введите команду для входа</strong>
-                        <span>Введите команду: <code>ssh root@IP_ВАШЕГО_СЕРВЕРА</code> (цифры вам даст хостинг). Пример:
-                            <code>ssh root@123.45.678.999</code></span>
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div>
+                            <strong>Как работать в Терминале:</strong><br>
+                            • Чтобы вставить текст: нажмите <strong>Cmd + V</strong>.<br>
+                            • Чтобы скопировать текст: выделите его мышкой и нажмите <strong>Cmd + C</strong>.
+                        </div>
                     </div>
-                </div>
 
-                <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
-                    <img src="images/ssh-login.png" alt="Ввод команды ssh root@ip" class="zoomable-image"
-                        style="width: 100%; display: block;">
-                </div>
-
-                <div class="substep">
-                    <div class="substep-icon">4️⃣</div>
-                    <div class="substep-content">
-                        <strong>Вставьте пароль</strong>
-                        <span>Вставьте пароль (нажатием правой кнопки мыши) и нажмите Enter (пароль также находится на
-                            хостинге).<br>
-                            <strong>Важно:</strong> При вводе пароля символы не отображаются! Это нормально. Введите
-                            вслепую и нажмите Enter. Вас должно пустить на
-                            сервер и в начале строки появится <code>root@ЛогинСервера:</code></span>
+                    <div class="substep">
+                        <div class="substep-icon">3️⃣</div>
+                        <div class="substep-content">
+                            <strong>Подтвердите подключение</strong>
+                            <span>Если Терминал спросит «Are you sure you want to continue connecting?» — введите
+                                <code>yes</code> и нажмите Enter.</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="screenshot" style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
-                    <img src="images/ssh-password.png" alt="Ввод пароля SSH в PowerShell" class="zoomable-image"
-                        style="width: 100%; display: block;">
+                    <div class="substep">
+                        <div class="substep-icon">4️⃣</div>
+                        <div class="substep-content">
+                            <strong>Вставьте пароль</strong>
+                            <span>Вставьте пароль (<strong>Cmd + V</strong>) и нажмите Enter.
+                                Пароль находится в письме от хостинга.<br>
+                                <strong>Важно:</strong> При вводе пароля символы не отображаются! Это нормально. Введите
+                                вслепую и нажмите Enter. Вас должно пустить на
+                                сервер и в начале строки появится <code>root@ЛогинСервера:</code></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1183,19 +1254,40 @@
     </div>
 
     <script>
-        // OS Tab Switcher
+        // OS Tab Switcher — scoped per step card
         function switchOS(os) {
-            document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
-            document.getElementById('os-' + os).classList.add('active');
-            event.target.classList.add('active');
+            const btn = event.target;
+            const card = btn.closest('.step-card') || btn.closest('.step-body');
+            if (!card) return;
+            card.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+            card.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            card.querySelector('#os-' + os).classList.add('active');
+        }
+
+        function switchOS0(id) {
+            const btn = event.target;
+            const card = btn.closest('.step-card');
+            if (!card) return;
+            card.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+            card.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            card.querySelector('#os-' + id).classList.add('active');
         }
 
         // Auto-detect OS
         if (navigator.platform.indexOf('Mac') > -1 || navigator.userAgent.indexOf('Mac') > -1) {
-            switchOS('mac');
-            document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.os-tab')[1].classList.add('active');
+            // Switch all tab groups to macOS
+            document.querySelectorAll('.os-tabs').forEach(tabGroup => {
+                tabGroup.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+                const macTab = tabGroup.querySelectorAll('.os-tab')[1];
+                if (macTab) macTab.classList.add('active');
+            });
+            document.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+            ['os-mac0', 'os-mac'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('active');
+            });
         }
 
         function copyCommand() {

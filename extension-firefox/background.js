@@ -19,7 +19,9 @@ const DEFAULT_DE = [
     'whatsapp.com', 'whatsapp.net',
     'signal.org',
     'telegram.org', 't.me',
-    'rutracker.org', 'rutracker.cc'
+    'rutracker.org', 'rutracker.cc',
+    // Proxy services
+    'proxy6.net'
 ];
 
 const DEFAULT_US = [

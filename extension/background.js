@@ -22,17 +22,20 @@ const DEFAULT_DOMAINS = [
     'bbc.com', 'bbc.co.uk',
     'soundcloud.com',
     // Torrent trackers
-    'rutracker.org', 'rutracker.cc'
+    'rutracker.org', 'rutracker.cc',
+    // Proxy services
+    'proxy6.net'
 ];
 
 const PROXY_HOST = '127.0.0.1';
 const PROXY_PORT_DE = 10808;
 
 let customDomains = [];
+let excludedDefaults = [];
 let isEnabled = true;
 
 function getAllDomains() {
-    return [...DEFAULT_DOMAINS, ...customDomains];
+    return [...DEFAULT_DOMAINS.filter(d => !excludedDefaults.includes(d)), ...customDomains];
 }
 
 function generatePacScript() {
@@ -100,6 +103,7 @@ function removeDomain(domain) {
 function saveAndApply() {
     chrome.storage.local.set({
         customDomains: customDomains,
+        excludedDefaults: excludedDefaults,
         isEnabled: isEnabled
     }, () => {
         applyProxy();
@@ -107,8 +111,9 @@ function saveAndApply() {
 }
 
 // Load saved settings
-chrome.storage.local.get(['customDomains', 'isEnabled'], (result) => {
+chrome.storage.local.get(['customDomains', 'excludedDefaults', 'isEnabled'], (result) => {
     if (result.customDomains) customDomains = result.customDomains;
+    if (result.excludedDefaults) excludedDefaults = result.excludedDefaults;
     if (result.isEnabled !== undefined) isEnabled = result.isEnabled;
     applyProxy();
 });
@@ -120,6 +125,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             sendResponse({
                 isEnabled: isEnabled,
                 defaultDomains: DEFAULT_DOMAINS,
+                excludedDefaults: excludedDefaults,
                 customDomains: customDomains
             });
             break;
@@ -135,6 +141,25 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         case 'removeDomain':
             const removed = removeDomain(msg.domain);
             sendResponse({ success: removed, customDomains });
+            break;
+        case 'removeDefault':
+            if (DEFAULT_DOMAINS.includes(msg.domain) && !excludedDefaults.includes(msg.domain)) {
+                excludedDefaults.push(msg.domain);
+                saveAndApply();
+                sendResponse({ success: true, excludedDefaults });
+            } else {
+                sendResponse({ success: false, excludedDefaults });
+            }
+            break;
+        case 'restoreDefault':
+            const ri = excludedDefaults.indexOf(msg.domain);
+            if (ri !== -1) {
+                excludedDefaults.splice(ri, 1);
+                saveAndApply();
+                sendResponse({ success: true, excludedDefaults });
+            } else {
+                sendResponse({ success: false, excludedDefaults });
+            }
             break;
         case 'addCurrentTab':
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
