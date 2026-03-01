@@ -140,7 +140,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             const removed = removeDomain(msg.domain);
             sendResponse({ success: removed, customDomains });
             break;
-        case 'removeDefault':
+        case 'removeDefault': {
             if (DEFAULT_DOMAINS.includes(msg.domain) && !excludedDefaults.includes(msg.domain)) {
                 excludedDefaults.push(msg.domain);
                 saveAndApply();
@@ -149,7 +149,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                 sendResponse({ success: false, excludedDefaults });
             }
             break;
-        case 'restoreDefault':
+        }
+        case 'restoreDefault': {
             const ri = excludedDefaults.indexOf(msg.domain);
             if (ri !== -1) {
                 excludedDefaults.splice(ri, 1);
@@ -159,6 +160,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                 sendResponse({ success: false, excludedDefaults });
             }
             break;
+        }
         case 'addCurrentTab':
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 if (tabs[0] && tabs[0].url) {
