@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "ShadowLink Proxy",
+    "name": "OwnStep Proxy",
     "version": "2.0",
-    "description": "Маршрутизация: DE для заблокированных, US для Gemini",
+    "description": "Безопасный доступ к заблокированным сайтам через прокси",
     "permissions": [
         "proxy",
         "storage",
@@ -17,6 +17,6 @@
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "ShadowLink Proxy"
+        "default_title": "OwnStep Proxy"
     }
 }

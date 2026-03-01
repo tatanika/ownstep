@@ -1,4 +1,4 @@
-// ===== ShadowLink VPN Client — Application Logic =====
+// ===== OwnStep — Application Logic =====
 
 // ===== State =====
 let state = {
@@ -23,7 +23,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 // ===== Config Persistence =====
 function loadConfig() {
     try {
-        const saved = localStorage.getItem('shadowlink_config');
+        const saved = localStorage.getItem('ownstep_config');
         if (saved) return JSON.parse(saved);
     } catch (e) { }
     return {
@@ -60,7 +60,7 @@ function saveConfig() {
         }
     };
     state.config = config;
-    localStorage.setItem('shadowlink_config', JSON.stringify(config));
+    localStorage.setItem('ownstep_config', JSON.stringify(config));
     return config;
 }
 
@@ -541,5 +541,5 @@ function showToast(message, type = 'success') {
 
 // ===== Init =====
 populateFields();
-addLog('ShadowLink инициализирован', 'info');
+addLog('OwnStep инициализирован', 'info');
 addLog('Введите данные сервера во вкладке "Серверы"', 'info');

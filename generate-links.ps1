@@ -10,7 +10,7 @@ $config = Get-Content $configPath -Raw | ConvertFrom-Json
 
 Write-Host ''
 Write-Host '  ========================================' -ForegroundColor Cyan
-Write-Host '    ShadowLink - Phone Links Generator' -ForegroundColor Cyan
+Write-Host '    OwnStep - Phone Links Generator   ' -ForegroundColor Cyan
 Write-Host '  ========================================' -ForegroundColor Cyan
 Write-Host ''
 
@@ -33,9 +33,9 @@ foreach ($out in $config.outbounds) {
     $fp = $reality.fingerprint
     $tag = $out.tag
 
-    $name = 'ShadowLink'
-    if ($tag -match 'us') { $name = 'ShadowLink_US' }
-    elseif ($tag -match 'de') { $name = 'ShadowLink_DE' }
+    $name = 'OwnStep'
+    if ($tag -match 'us') { $name = 'OwnStep_US' }
+    elseif ($tag -match 'de') { $name = 'OwnStep_DE' }
 
     $link = 'vless://' + $uuid + '@' + $addr + ':' + $port + '?type=tcp&security=reality&sni=' + $sni + '&pbk=' + $pbk + '&flow=' + $flow + '&fp=' + $fp + '#' + $name
 

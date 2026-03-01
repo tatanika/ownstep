@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "OwnStep Proxy",
+    "version": "2.0",
+    "description": "Маршрутизация: DE для заблокированных, US для Gemini",
+    "permissions": [
+        "proxy",
+        "storage",
+        "activeTab",
+        "tabs",
+        "<all_urls>"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "ownstep-proxy@ownstep",
+            "strict_min_version": "91.0"
+        }
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_title": "OwnStep Proxy"
+    }
+}

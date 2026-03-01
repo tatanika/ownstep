@@ -1,4 +1,4 @@
-// ShadowLink Proxy Extension - Background Script
+// OwnStep Proxy Extension - Background Script
 
 const DEFAULT_DOMAINS = [
     // Video

@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "ShadowLink Proxy",
+    "name": "OwnStep Proxy",
     "version": "1.0",
-    "description": "Маршрутизация сайтов через немецкий VPN-прокси ShadowLink",
+    "description": "Маршрутизация сайтов через VPN-прокси OwnStep",
     "permissions": [
         "proxy",
         "storage",
@@ -17,6 +17,6 @@
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "ShadowLink Proxy"
+        "default_title": "OwnStep Proxy"
     }
 }

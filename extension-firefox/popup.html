@@ -11,7 +11,7 @@
         }
 
         body {
-            width: 340px;
+            width: 360px;
             font-family: 'Segoe UI', sans-serif;
             background: #1a1a2e;
             color: #e0e0e0;
@@ -92,7 +92,11 @@
             margin-bottom: 8px;
         }
 
-        .status-proxied {
+        .status-de {
+            color: #ffcc00;
+        }
+
+        .status-us {
             color: #4CAF50;
         }
 
@@ -127,7 +131,12 @@
             transform: none;
         }
 
-        .btn-add {
+        .btn-de {
+            background: linear-gradient(135deg, #333, #555);
+            color: #ffcc00;
+        }
+
+        .btn-us {
             background: linear-gradient(135deg, #0f3460, #533483);
             color: #fff;
         }
@@ -168,18 +177,26 @@
         }
 
         .add-row button {
-            padding: 6px 10px;
+            padding: 6px 8px;
             border: none;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             font-weight: 600;
-            background: linear-gradient(135deg, #0f3460, #533483);
+        }
+
+        .add-de {
+            background: #555;
+            color: #ffcc00;
+        }
+
+        .add-us {
+            background: #533483;
             color: white;
         }
 
         .domain-list {
-            max-height: 200px;
+            max-height: 150px;
             overflow-y: auto;
             padding: 0 16px 4px;
         }
@@ -214,6 +231,19 @@
             font-size: 9px;
             padding: 2px 5px;
             border-radius: 3px;
+        }
+
+        .tag-de {
+            background: #333;
+            color: #ffcc00;
+        }
+
+        .tag-us {
+            background: #1a1a4e;
+            color: #7b7bff;
+        }
+
+        .tag-auto {
             background: #1a1a2e;
             color: #555;
         }
@@ -244,9 +274,9 @@
 
 <body>
     <div class="header">
-        <h1>⚡ OwnStep Proxy</h1>
+        <h1>🦊 OwnStep Proxy</h1>
         <div class="toggle-wrap">
-            <span class="toggle-label">Прокси</span>
+            <span class="toggle-label">VPN</span>
             <div class="toggle active" id="mainToggle"></div>
         </div>
     </div>
@@ -255,24 +285,29 @@
         <div class="site-domain" id="siteDomain">—</div>
         <div class="site-status" id="siteStatus">Загрузка...</div>
         <div class="btn-group">
-            <button class="btn btn-add" id="btnAdd">+ Добавить в прокси</button>
-            <button class="btn btn-remove" id="btnRemove" style="display:none">✕ Убрать из прокси</button>
+            <button class="btn btn-de" id="btnDE">🇩🇪 Германия</button>
+            <button class="btn btn-us" id="btnUS">🇺🇸 США</button>
+            <button class="btn btn-remove" id="btnRemove" style="display:none">✕ Убрать</button>
         </div>
     </div>
 
     <div class="section">Добавить домен</div>
     <div class="add-row">
-        <input type="text" id="customInput" placeholder="example.com">
-        <button id="addBtn">+ Добавить</button>
+        <input type="text" id="customInput" placeholder="twitch.tv">
+        <button class="add-de" id="addDE">+🇩🇪</button>
+        <button class="add-us" id="addUS">+🇺🇸</button>
     </div>
 
     <div class="section">Мои домены</div>
     <div class="domain-list" id="customList"></div>
 
-    <div class="section">Автоматически</div>
-    <div class="domain-list" id="defaultList"></div>
+    <div class="section">Авто: 🇺🇸 США</div>
+    <div class="domain-list" id="defaultUSList"></div>
 
-    <div class="footer">SOCKS5 127.0.0.1:10808</div>
+    <div class="section">Авто: 🇩🇪 Германия</div>
+    <div class="domain-list" id="defaultDEList"></div>
+
+    <div class="footer">DE: SOCKS5 127.0.0.1:10808 — US: SOCKS5 127.0.0.1:10818</div>
 
     <script src="popup.js"></script>
 </body>

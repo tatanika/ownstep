@@ -1,4 +1,4 @@
-// ShadowLink Proxy Extension - Popup Script
+// OwnStep Proxy Extension - Popup Script
 
 const mainToggle = document.getElementById('mainToggle');
 const currentDomain = document.getElementById('currentDomain');

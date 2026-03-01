@@ -1,4 +1,4 @@
-# ===== ShadowLink - Download Xray-core =====
+# ===== OwnStep - Download Xray-core =====
 # This script downloads the latest Xray-core for Windows
 
 $ErrorActionPreference = 'Stop'
@@ -13,7 +13,7 @@ if (Test-Path $xrayPath) {
 }
 
 Write-Host '========================================' -ForegroundColor Cyan
-Write-Host '  ShadowLink - Downloading Xray-core   ' -ForegroundColor Cyan
+Write-Host '  OwnStep - Downloading Xray-core      ' -ForegroundColor Cyan
 Write-Host '========================================' -ForegroundColor Cyan
 Write-Host ''
 
@@ -22,7 +22,7 @@ Write-Host '[*] Fetching latest release info...' -ForegroundColor Yellow
 $releaseUrl = 'https://api.github.com/repos/XTLS/Xray-core/releases/latest'
 
 try {
-    $release = Invoke-RestMethod -Uri $releaseUrl -Headers @{ 'User-Agent' = 'ShadowLink' }
+    $release = Invoke-RestMethod -Uri $releaseUrl -Headers @{ 'User-Agent' = 'OwnStep' }
 }
 catch {
     Write-Host '[ERROR] Failed to fetch release info' -ForegroundColor Red
