@@ -44,11 +44,11 @@
       "settings": {
         "vnext": [
           {
-            "address": "YOUR_SERVER_IP",
-            "port": 443,
+            "address": "77.91.79.203",
+            "port": 2083,
             "users": [
               {
-                "id": "YOUR-UUID-HERE",
+                "id": "fb5408fd-7179-486f-a046-7a74f926986c",
                 "encryption": "none",
                 "flow": "xtls-rprx-vision"
               }
@@ -63,7 +63,7 @@
           "show": false,
           "fingerprint": "chrome",
           "serverName": "www.google.com",
-          "publicKey": "YOUR_PUBLIC_KEY_HERE",
+          "publicKey": "oTCqA73YxdQl-g7c5oirlXz7cwii9YDKkmmg8fxQ8Qw",
           "shortId": ""
         }
       }
@@ -80,7 +80,7 @@
     }
   ],
   "routing": {
-    "domainStrategy": "IPIfNonMatch",
+    "domainStrategy": "AsIs",
     "rules": [
       {
         "type": "field",

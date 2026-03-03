@@ -94,8 +94,8 @@ echo -e "${BOLD}  🔐 Шаг 3 из 5: Генерация ключей шифр
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 KEYS=$("$XRAY_DIR/xray" x25519)
-PRIVATE_KEY=$(echo "$KEYS" | grep "Private" | awk '{print $3}')
-PUBLIC_KEY=$(echo "$KEYS" | grep "Public" | awk '{print $3}')
+PRIVATE_KEY=$(echo "$KEYS" | awk '/Private/ {print $NF}' | tr -d " ")
+PUBLIC_KEY=$(echo "$KEYS" | awk '/Public|Password/ {print $NF}' | tr -d " ")
 UUID=$("$XRAY_DIR/xray" uuid)
 
 echo -e "  ✅ Уникальные ключи сгенерированы!"
@@ -138,7 +138,6 @@ cat > "$CONFIG_FILE" << XRAYEOF
                     ],
                     "privateKey": "$PRIVATE_KEY",
                     "shortIds": [
-                        "",
                         "abcd1234"
                     ]
                 }
@@ -250,6 +249,16 @@ echo -e "${PURPLE}║  📋 ВАША ССЫЛКА ДЛЯ ПОДКЛЮЧЕНИЯ:
 echo -e "${PURPLE}╠═══════════════════════════════════════════════╣${NC}"
 echo -e "${PURPLE}║${NC}"
 echo -e "${PURPLE}║${NC}  ${BOLD}${CYAN}$VLESS_LINK${NC}"
+echo -e "${PURPLE}║${NC}"
+echo -e "${PURPLE}╚═══════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${PURPLE}╠═══════════════════════════════════════════════╣${NC}"
+echo -e "${PURPLE}║  🔑 ДАННЫЕ ДЛЯ РУЧНОЙ НАСТРОЙКИ (КОНФИГА):    ║${NC}"
+echo -e "${PURPLE}╠═══════════════════════════════════════════════╣${NC}"
+echo -e "${PURPLE}║${NC}"
+echo -e "${PURPLE}║${NC}  ID (UUID)  : ${BOLD}${GREEN}$UUID${NC}"
+echo -e "${PURPLE}║${NC}  Public Key : ${BOLD}${GREEN}$PUBLIC_KEY${NC}"
+echo -e "${PURPLE}║${NC}  IP Адрес   : ${BOLD}${GREEN}$SERVER_IP${NC}"
 echo -e "${PURPLE}║${NC}"
 echo -e "${PURPLE}╚═══════════════════════════════════════════════╝${NC}"
 echo ""
